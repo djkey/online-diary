@@ -1,5 +1,5 @@
 from app import db
-
+from sqlalchemy import CheckConstraint
 
 class User(db.Model):
     __tablename__ = 'Users'
@@ -76,8 +76,9 @@ class Grade(db.Model):
     grade_id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('Students.student_id'))
     schedule_id = db.Column(db.Integer, db.ForeignKey('Schedules.schedule_id'))
-    grade = db.Column(db.Integer, check='grade BETWEEN 0 AND 12')
+    grade = db.Column(db.Integer)
     comments = db.Column(db.Text)
+    __table_args__ = (CheckConstraint('grade >= 0 AND grade <= 12', name='check_grade'),)
 
 
 class Solution(db.Model):
