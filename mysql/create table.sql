@@ -78,11 +78,11 @@ CREATE TABLE Schedules (
 CREATE TABLE Grades (
     grade_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
-    lesson_id INT,
+    schedule_id INT,
     grade TINYINT CHECK (grade BETWEEN 0 AND 12),
     comments TEXT,
     FOREIGN KEY (student_id) REFERENCES Students(student_id),
-    FOREIGN KEY (lesson_id) REFERENCES Lessons(lesson_id)
+    FOREIGN KEY (schedule_id) REFERENCES Schedules(schedule_id)
 );
 
 CREATE TABLE Solutions (
