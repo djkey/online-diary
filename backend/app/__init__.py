@@ -1,6 +1,7 @@
 from flask import Flask
 import pymysql
 from app.config import Config
+from app.routes import blueprints
 
 
 def create_app():
@@ -15,10 +16,10 @@ def create_app():
         database=app.config['DB_NAME'],
         cursorclass=pymysql.cursors.DictCursor
     )
-
     app.connection = connection
 
-    from app.routes import bp as routes_bp
-    app.register_blueprint(routes_bp)
+    # Регистрация всех Blueprint'ов
+    for bp in blueprints:
+        app.register_blueprint(bp)
 
     return app

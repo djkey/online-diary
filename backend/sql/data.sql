@@ -238,7 +238,11 @@ INSERT INTO Grades (student_id, schedule_id, grade, comments) VALUES
     (9,  3, 10, 'Great improvement'),
     (10, 1, 7,  'Satisfactory'),
     (10, 2, 6,  'Needs to pay more attention'),
-    (10, 3, 5,  'Struggles with assignments');
+    (10, 3, 5,  'Struggles with assignments'),
+    (11, 1, 10, 'Excellent performance'),
+    (11, 2, 9, 'Very good understanding'),
+    (11, 3, 8, 'Consistent effort');
+;
 
 -- no Solutions data
 

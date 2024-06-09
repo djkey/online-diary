@@ -8,7 +8,7 @@
     <div class="profile-photo"></div>
     <div class="profile-info">
         <h2>Профіль</h2>
-        <p>Ім'я: {{ extra_info }}</p>
+        <p>{{ extra_info }}</p>
         <p>Електронна пошта: {{ user.email }}</p>
         {% if role == 'student' %}
             <p>Група: {{ group_name }}</p>
@@ -19,17 +19,32 @@
 </section>
 
 <section class="profile-forms">
-    <form method="post">
+    <form id="password-form" method="post">
         <label for="password">Новий пароль:</label>
         <input type="password" id="password" name="password" required>
         <label for="confirm_password">Підтвердіть пароль:</label>
         <input type="password" id="confirm_password" name="confirm_password" required>
         <button type="submit">Змінити пароль</button>
+        <p id="password-warning" style="color: red; display: none;">Паролі не співпадають</p>
     </form>
     
     <form method="post" class="delete-account" onsubmit="return confirm('Ви впевнені, що хочете видалити аккаунт?');">
         <input type="hidden" name="delete_account" value="true">
-        <button type="submit">Видалити аккаунт</button>
+        <button type="submit">Видалити акаунт</button>
     </form>
 </section>
+
+<script>
+document.getElementById('password-form').addEventListener('submit', function(event) {
+    var password = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirm_password').value;
+    
+    if (password !== confirmPassword) {
+        event.preventDefault();
+        document.getElementById('password-warning').style.display = 'block';
+    } else {
+        document.getElementById('password-warning').style.display = 'none';
+    }
+});
+</script>
 {% endblock %}

@@ -5,7 +5,7 @@
 {% block content %}
 <section>
     <h2>Вхід</h2>
-    <form method="post" action="{{ url_for('routes.login') }}">
+    <form method="post" action="{{ url_for('common.login') }}">
         <label for="login">Логін:</label>
         <input type="text" id="login" name="login" required>
         

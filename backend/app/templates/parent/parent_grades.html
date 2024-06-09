@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Оцінки - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Оцінки</h2>
+
+{% for student_name, data in grades_data.items() %}
+    <h3>{{ student_name }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Предмет</th>
+                {% for date in data.dates %}
+                    <th>{{ date }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson_name, grades in data.lessons.items() %}
+                <tr>
+                    <td>{{ lesson_name }}</td>
+                    {% for date in data.dates %}
+                        <td>{{ grades[date] }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+{% endfor %}
+
+{% endblock %}

@@ -18,19 +18,22 @@
             <nav>
                 <ul>
                     {% if session.get('user_id') %}
+                    <li><a href="{{ url_for('common.news') }}">Новини</a></li>
                         {% if session.get('role') == 'admin' %}
                             <li><a href="#">для адміну</a></li>
                         {% elif session.get('role') == 'teacher' %}
                             <li><a href="#">Заглушка для вчителя</a></li>
                         {% elif session.get('role') == 'student' %}
                             <li><a href="#">Заглушка для студента</a></li>
+                        {% elif session.get('role') == 'parent' %}
+                            <li><a href="{{ url_for('parent.parent_grades') }}">Оцінки дітей</a></li>
                         {% endif %}
-                            <li><a href="{{ url_for('routes.profile') }}">Профіль</a></li>
-                            <li><a href="{{ url_for('routes.logout') }}">Вихід</a></li>
+                            <li><a href="{{ url_for('common.profile') }}">Профіль</a></li>
+                            <li><a href="{{ url_for('common.logout') }}">Вихід</a></li>
                         {% else %}
-                            <li><a href="{{ url_for('routes.register') }}">Реєстрація</a></li>
-                            <li><a href="{{ url_for('routes.login') }}">Вхід</a></li>
-                            <li><a href="{{ url_for('routes.users') }}">[t]Користувачі</a></li>
+                            <li><a href="{{ url_for('common.register') }}">Реєстрація</a></li>
+                            <li><a href="{{ url_for('common.login') }}">Вхід</a></li>
+                            <li><a href="{{ url_for('common.users') }}">[t]Користувачі</a></li>
                         {% endif %}
                         
                 </ul>

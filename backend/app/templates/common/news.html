@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Новини - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Новини</h2>
+<ul>
+    {% for notification in notifications %}
+    <li>
+        <strong>{{ notification.submission_date }}</strong>: {{ notification.notifications }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
