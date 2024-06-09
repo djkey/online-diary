@@ -1,22 +1,24 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager
-
-db = SQLAlchemy()
-migrate = Migrate()
-jwt = JWTManager()
+import pymysql
+from app.config import Config
 
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('app.config.Config')
+    app.config.from_object(Config)
 
-    db.init_app(app)
-    migrate.init_app(app, db)
-    jwt.init_app(app)
+    # Подключение к базе данных
+    connection = pymysql.connect(
+        host=app.config['DB_HOST'],
+        user=app.config['DB_USER'],
+        password=app.config['DB_PASSWORD'],
+        database=app.config['DB_NAME'],
+        cursorclass=pymysql.cursors.DictCursor
+    )
 
-    from app import routes
-    app.register_blueprint(routes.bp)
+    app.connection = connection
+
+    from app.routes import bp as routes_bp
+    app.register_blueprint(routes_bp)
 
     return app

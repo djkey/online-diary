@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Реєстрація - Music School Diary{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Реєстрація</h2>
+    <form method="post" action="{{ url_for('routes.register') }}">
+        <label for="name">Ім'я:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Електронна пошта:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="login">Логін:</label>
+        <input type="text" id="login" name="login" required>
+        
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Реєстрація</button>
+    </form>
+</section>
+{% endblock %}

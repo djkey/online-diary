@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Music School Diary{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+                <a href="/">
+                    <h1>Music School Diary</h1>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    {% if session.get('user_id') %}
+                        {% if session.get('role') == 'admin' %}
+                            <li><a href="#">для адміну</a></li>
+                        {% elif session.get('role') == 'teacher' %}
+                            <li><a href="#">Заглушка для вчителя</a></li>
+                        {% elif session.get('role') == 'student' %}
+                            <li><a href="#">Заглушка для студента</a></li>
+                        {% endif %}
+                            <li><a href="{{ url_for('routes.profile') }}">Профіль</a></li>
+                            <li><a href="{{ url_for('routes.logout') }}">Вихід</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('routes.register') }}">Реєстрація</a></li>
+                            <li><a href="{{ url_for('routes.login') }}">Вхід</a></li>
+                            <li><a href="{{ url_for('routes.users') }}">[t]Користувачі</a></li>
+                        {% endif %}
+                        
+                </ul>
+            </nav>
+        </div>
+        {% if session['role'] == 'user' %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">×</span> 
+            <p>Аккаунт не підтверджений</p>
+        </div>
+        {% endif %}
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Music School Diary. Всі права захищені.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Профіль - Music School Diary{% endblock %}
+
+{% block content %}
+
+<section id="profile-section" class="profile-container">
+    <div class="profile-photo"></div>
+    <div class="profile-info">
+        <h2>Профіль</h2>
+        <p>Ім'я: {{ extra_info }}</p>
+        <p>Електронна пошта: {{ user.email }}</p>
+        {% if role == 'student' %}
+            <p>Група: {{ group_name }}</p>
+        {% elif role == 'parent' %}
+            <p>Діти: {{ children_info }}</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="profile-forms">
+    <form method="post">
+        <label for="password">Новий пароль:</label>
+        <input type="password" id="password" name="password" required>
+        <label for="confirm_password">Підтвердіть пароль:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+        <button type="submit">Змінити пароль</button>
+    </form>
+    
+    <form method="post" class="delete-account" onsubmit="return confirm('Ви впевнені, що хочете видалити аккаунт?');">
+        <input type="hidden" name="delete_account" value="true">
+        <button type="submit">Видалити аккаунт</button>
+    </form>
+</section>
+{% endblock %}

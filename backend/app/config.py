@@ -3,8 +3,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 class Config:
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+    DB_HOST = os.getenv('HOST')
+    DB_USER = os.getenv('USER')
+    DB_PASSWORD = os.getenv('PASSWORD')
+    DB_NAME = os.getenv('DBNAME')
+    SECRET_KEY = os.urandom(24)

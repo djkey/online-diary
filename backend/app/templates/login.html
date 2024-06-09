@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Вхід - Music School Diary{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Вхід</h2>
+    <form method="post" action="{{ url_for('routes.login') }}">
+        <label for="login">Логін:</label>
+        <input type="text" id="login" name="login" required>
+        
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Увійти</button>
+    </form>
+</section>
+{% endblock %}
