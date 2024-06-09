@@ -141,13 +141,20 @@ def news():
     role = session.get('role')
 
     with current_app.connection.cursor() as cursor:
-        cursor.execute("""
+        if role == 'admin':
+            cursor.execute("""
+                SELECT notifications, submission_date 
+                FROM Notifications 
+                ORDER BY submission_date DESC
+            """)
+        else:
+            cursor.execute("""
             SELECT notifications, submission_date 
             FROM Notifications 
             WHERE options = 'all' 
                OR options = %s
             ORDER BY submission_date DESC
-        """, (role,))
+            """, (role+"s",))
         notifications = cursor.fetchall()
 
     return render_template('common/news.html', notifications=notifications)

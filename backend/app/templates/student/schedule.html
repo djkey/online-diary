@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Розклад занять - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Розклад занять</h2>
+
+{% for date, lessons in grouped_schedule.items() %}
+    <h3>{{ date }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Номер уроку</th>
+                <th>Предмет</th>
+                <th>Вчитель</th>
+                <th>Аудиторія</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in lessons %}
+            <tr>
+                <td>{{ lesson.number_lesson }}</td>
+                <td>{{ lesson.lesson_name }}</td>
+                <td>{{ lesson.teacher_name }}</td>
+                <td>{{ lesson.room_number }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+{% endblock %}

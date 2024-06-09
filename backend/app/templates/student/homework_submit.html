@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Сдача домашнього завдання - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Сдача домашнього завдання</h2>
+
+<p><strong>Опис завдання:</strong> {{ homework.homework_description }}</p>
+<p><strong>Дата завершення:</strong> {{ homework.date_to }}</p>
+
+<form method="post" enctype="multipart/form-data">
+    <label for="description">Опис рішення:</label>
+    <textarea id="description" name="description" required>{{ homework.solution_description }}</textarea>
+    
+    <label for="files">Прикріпити файл:</label>
+    <input type="file" id="files" name="files" {% if not homework.solution_description %}required{% endif %}>
+    {% if homework.data_options %}
+        <p>Вибраний файл: {{ homework.data_options }}</p>
+    {% endif %}
+    
+    <button type="submit">Здати завдання</button>
+</form>
+
+{% if homework.files %}
+    <h3>Вже здане завдання</h3>
+    <p>{{ homework.solution_description }}</p>
+    <a href="{{ url_for('student.download_file', homework_id=homework.homework_id) }}">Завантажити файл</a>
+{% endif %}
+{% endblock %}

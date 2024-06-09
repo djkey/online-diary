@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Домашні завдання - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Домашні завдання</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Опис</th>
+            <th>Дата завершення</th>
+            <th>Сдано</th>
+            <th>Дата сдачи</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for homework in homeworks %}
+        <tr>
+            <td><a href="{{ url_for('student.student_submit_homework', homework_id=homework.homework_id) }}">{{ homework.description }}</a></td>
+            <td>{{ homework.date_to }}</td>
+            <td>{{ 'Так' if homework.submission_date else 'Ні' }}</td>
+            <td>{{ homework.submission_date if homework.submission_date else '' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

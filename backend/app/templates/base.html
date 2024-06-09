@@ -24,7 +24,8 @@
                         {% elif session.get('role') == 'teacher' %}
                             <li><a href="#">Заглушка для вчителя</a></li>
                         {% elif session.get('role') == 'student' %}
-                            <li><a href="#">Заглушка для студента</a></li>
+                            <li><a href="{{ url_for('student.student_schedule') }}">Розклад занять</a></li>
+                            <li><a href="{{ url_for('student.student_homework') }}">Домашні завдання</a></li>
                         {% elif session.get('role') == 'parent' %}
                             <li><a href="{{ url_for('parent.parent_grades') }}">Оцінки дітей</a></li>
                         {% endif %}
