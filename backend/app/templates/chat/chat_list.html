@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Чат - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Ваші чати</h2>
+
+<ul>
+    {% for contact in contacts %}
+        <li><a href="{{ url_for('common.chat', user_id=contact.user_id) }}">{{ contact.name }}</a></li>
+    {% endfor %}
+</ul>
+
+<a href="{{ url_for('common.new_chat') }}">Написати новому користувачу</a>
+{% endblock %}

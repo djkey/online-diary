@@ -173,3 +173,76 @@ def users():
         cursor.execute("SELECT * FROM Users")
         all_users = cursor.fetchall()
     return render_template('common/users.html', users=all_users)
+
+
+@common_bp.route('/chat')
+def chat_list():
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('common.login'))
+
+    with current_app.connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT DISTINCT u.user_id, u.name 
+            FROM Users u
+            JOIN Messages m ON (u.user_id = m.sender_id OR u.user_id = m.receiver_id)
+            WHERE m.sender_id = %s OR m.receiver_id = %s
+        """, (user_id, user_id))
+
+        contacts = cursor.fetchall()
+
+    return render_template('chat/chat_list.html', contacts=contacts)
+
+
+@common_bp.route('/chat/<int:user_id>', methods=['GET', 'POST'])
+def chat(user_id):
+    current_user_id = session.get('user_id')
+    if not current_user_id:
+        return redirect(url_for('common.login'))
+
+    with current_app.connection.cursor() as cursor:
+        if request.method == 'POST':
+            message = request.form['message']
+            cursor.execute("""
+                INSERT INTO Messages (sender_id, receiver_id, msg)
+                VALUES (%s, %s, %s)
+            """, (current_user_id, user_id, message))
+            current_app.connection.commit()
+
+        cursor.execute("""
+            SELECT m.msg, m.submission_date, u.name as sender_name, m.sender_id
+            FROM Messages m
+            JOIN Users u ON m.sender_id = u.user_id
+            WHERE (m.sender_id = %s AND m.receiver_id = %s) OR (m.sender_id = %s AND m.receiver_id = %s)
+            ORDER BY m.submission_date
+        """, (current_user_id, user_id, user_id, current_user_id))
+
+        messages = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT name FROM Users WHERE user_id = %s
+        """, (user_id,))
+        recipient_name = cursor.fetchone()['name']
+
+    return render_template('chat/chat.html', messages=messages, user_id=user_id, recipient_name=recipient_name)
+
+
+@common_bp.route('/chat/new', methods=['GET', 'POST'])
+def new_chat():
+    current_user_id = session.get('user_id')
+    if not current_user_id:
+        return redirect(url_for('common.login'))
+
+    with current_app.connection.cursor() as cursor:
+        if request.method == 'POST':
+            receiver_id = request.form['receiver_id']
+            return redirect(url_for('common.chat', user_id=receiver_id))
+
+        cursor.execute("""
+            SELECT user_id, name FROM Users WHERE user_id != %s
+        """, (current_user_id,))
+
+        users = cursor.fetchall()
+
+    return render_template('chat/new_chat.html', users=users)
+

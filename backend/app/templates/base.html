@@ -29,6 +29,7 @@
                         {% elif session.get('role') == 'parent' %}
                             <li><a href="{{ url_for('parent.parent_grades') }}">Оцінки дітей</a></li>
                         {% endif %}
+                            <li><a href="{{ url_for('common.chat_list') }}">Чат</a></li>
                             <li><a href="{{ url_for('common.profile') }}">Профіль</a></li>
                             <li><a href="{{ url_for('common.logout') }}">Вихід</a></li>
                         {% else %}
