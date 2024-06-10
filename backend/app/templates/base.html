@@ -22,7 +22,9 @@
                         {% if session.get('role') == 'admin' %}
                             <li><a href="#">для адміну</a></li>
                         {% elif session.get('role') == 'teacher' %}
-                            <li><a href="#">Заглушка для вчителя</a></li>
+                            <li><a href="{{ url_for('teacher.teacher_schedule') }}">Розклад груп</a></li>
+                            <li><a href="{{ url_for('teacher.my_subject') }}">Мій предмет</a></li>
+                            <li><a href="{{ url_for('teacher.homeworks') }}">Завдання</a></li>
                         {% elif session.get('role') == 'student' %}
                             <li><a href="{{ url_for('student.student_schedule') }}">Розклад занять</a></li>
                             <li><a href="{{ url_for('student.student_homework') }}">Домашні завдання</a></li>

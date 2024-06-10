@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Рішення ДЗ - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Рішення ДЗ для {{ solution.student_name }}</h2>
+<p>Домашнє завдання: {{ solution.homework_description }}</p>
+<p>Дата здачі: {{ solution.submission_date }}</p>
+<p>Опис рішення: {{ solution.description }}</p>
+{% if solution.files %}
+    <a href="{{ url_for('teacher.download_file', homework_id=solution.homework_id, student_id=solution.student_id) }}">Завантажити файл</a>
+{% else %}
+    <p>Файл не прикріплений</p>
+{% endif %}
+{% endblock %}

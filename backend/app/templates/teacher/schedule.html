@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Розклад груп - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Розклад груп</h2>
+
+{% for group in groups %}
+    <h3>{{ group.group_name }}</h3>
+    {% for date, lessons in schedules[group.group_name].items() %}
+        <h4>{{ date }}</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>№ уроку</th>
+                    <th>Урок</th>
+                    <th>Вчитель</th>
+                    <th>Кабінет</th>
+                    <th>Опис предмету</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(8) %}
+                    <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                            <form method="post" style="display: inline;">
+                                <input type="hidden" name="schedule_id" value="{{ lessons[i].schedule_id if lessons[i] else '' }}">
+                                <input type="hidden" name="group_id" value="{{ group.group_id }}">
+                                <input type="hidden" name="date" value="{{ date }}">
+                                <input type="hidden" name="number_lesson" value="{{ i + 1 }}">
+                                <select name="lesson_id" onchange="this.form.submit()">
+                                    <option value="" {% if not lessons[i] or not lessons[i].lesson_id %}selected{% endif %}>-- Виберіть урок --</option>
+                                    {% for lesson in all_lessons %}
+                                        <option value="{{ lesson.lesson_id }}" {% if lessons[i] and lessons[i].lesson_id == lesson.lesson_id %}selected{% endif %}>{{ lesson.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </td>
+                        <td>{{ lessons[i].teacher_name if lessons[i] else '' }}</td>
+                        <td>{{ lessons[i].room_number if lessons[i] else '' }}</td>
+                        <td>{{ lessons[i].lesson_description if lessons[i] else '' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+    <form method="post" style="margin-top: 20px;">
+        <input type="hidden" name="group_id" value="{{ group.group_id }}">
+        <label for="date_{{ group.group_id }}">Дата:</label>
+        <input type="date" id="date_{{ group.group_id }}" name="date" required>
+        <button type="submit" name="add_day">Додати новий день</button>
+    </form>
+{% endfor %}
+{% endblock %}

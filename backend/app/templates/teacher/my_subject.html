@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Мій предмет - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Мій предмет</h2>
+
+{% for date, lessons in grouped_lessons.items() %}
+    <h3>{{ date }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Група</th>
+                <th>Предмет</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lesson in lessons %}
+                <tr>
+                    <td>{{ lesson.group_name }}</td>
+                    <td>{{ lesson.lesson_name }}</td>
+                    <td>
+                        <a href="{{ url_for('teacher.view_grades', schedule_id=lesson.schedule_id) }}">Переглянути та виставити оцінки</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+{% endblock %}

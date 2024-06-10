@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Домашні завдання - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Усі домашні завдання</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Опис</th>
+            <th>Дата завершення</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for homework in homeworks %}
+            <tr>
+                <td>{{ homework.description }}</td>
+                <td>{{ homework.date_to }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Додати нове домашнє завдання</h3>
+<form method="post">
+    <label for="description">Опис:</label>
+    <input type="text" id="description" name="description" required>
+    
+    <label for="date_to">Дата завершення:</label>
+    <input type="date" id="date_to" name="date_to" required>
+    
+    <button type="submit">Додати</button>
+</form>
+{% endblock %}

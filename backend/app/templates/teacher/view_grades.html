@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Оцінки - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Оцінки для {{ lesson.group_name }} - {{ lesson.lesson_name }} ({{ lesson.date }})</h2>
+
+<form method="post">
+    <input type="hidden" name="schedule_id" value="{{ lesson.schedule_id }}">
+    <table>
+        <thead>
+            <tr>
+                <th>Учень</th>
+                <th>Оцінка</th>
+                <th>Коментарі</th>
+                <th>Рішення ДЗ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.student_name }}</td>
+                    <td>
+                        <input type="hidden" name="student_id" value="{{ student.student_id }}">
+                        <input type="text" name="grade_{{ student.student_id }}" value="{{ student.grade if student.grade is not none else '' }}">
+                    </td>
+                    <td>
+                        <input type="text" name="comment_{{ student.student_id }}" value="{{ student.comments if student.comments is not none else '' }}">
+                    </td>
+                    <td>
+                        {% if lesson.homework_id %}
+                            <a href="{{ url_for('teacher.view_solution', homework_id=lesson.homework_id, student_id=student.student_id) }}">Переглянути рішення</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <label for="homework_id">Домашнє завдання:</label>
+    <select name="homework_id" id="homework_id">
+        <option value="">Виберіть домашнє завдання</option>
+        {% for homework in homeworks %}
+            <option value="{{ homework.homework_id }}" {% if homework.homework_id == lesson.homework_id %}selected{% endif %}>
+                {{ homework.description }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit" name="save_grades">Зберегти оцінки та призначити ДЗ</button>
+</form>
+
+{% endblock %}

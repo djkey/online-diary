@@ -53,6 +53,7 @@ header a {
 main {
     padding: 7em 2em 2em;
     margin-top: 1em;
+    margin-bottom: 2em;
 }
 
 section {
@@ -435,3 +436,10 @@ tr td:last-child {
     background-color: #45a049;
 }
 
+
+
+select {
+    width: 100%;
+    padding: 5px;
+    margin: 5px 0;
+}
