@@ -13,7 +13,7 @@ def role_required(roles):
                 return redirect(url_for('common.login'))
 
             if user_role not in roles and user_role != 'admin':
-                abort(404)  # HTTP статус-код 403 Forbidden
+                abort(404)  
 
             return f(*args, **kwargs)
         return decorated_function
