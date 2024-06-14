@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця Classes - Music School Diary{% endblock %}
+
+{% block content %}
+
+<h1>Таблиця Classes</h1>
+<button onclick="toggleForm()">Додати новий запис</button>
+<form id="addClassForm" method="POST" style="display: none; width: 40%;">
+    <div class="form-row">
+        <input type="text" name="name" placeholder="Назва класу" required style="width: 30%; margin: 5px;">
+        <select name="class_teacher" required style="width: 30%; margin: 5px;">
+            <option value="" disabled selected>Виберіть класного керівника</option>
+            {% for teacher in available_teachers %}
+            <option value="{{ teacher.teacher_id }}">{{ teacher.teacher_id }}: {{ teacher.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="start_year" placeholder="Рік початку" required style="width: 30%; margin: 5px;" min="2000" max="2100">
+        <button type="submit" class="icon-button" style="color: green;">&#10004;</button>
+        <button type="button" class="icon-button" style="color: red;" onclick="toggleForm()">&#10008;</button>
+    </div>
+</form>
+<table>
+    <thead>
+        <tr>
+            {% for column in columns %}
+            <th>{{ column }}</th>
+            {% endfor %}
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+        <tr>
+            {% for column in columns %}
+            <td>{{ row[column] }}</td>
+            {% endfor %}
+            <td>
+                <form method="POST" action="{{ url_for('tables.delete_class') }}">
+                    <input type="hidden" name="class_id" value="{{ row['class_id'] }}">
+                    <button type="submit" class="delete-button" onclick="return confirm('Ви впевнені, що хочете видалити цю запис?');">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<script>
+function toggleForm() {
+    var form = document.getElementById("addClassForm");
+    if (form.style.display === "none") {
+        form.style.display = "flex";
+    } else {
+        form.style.display = "none";
+    }
+}
+</script>
+{% endblock %}

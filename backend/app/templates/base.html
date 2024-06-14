@@ -20,8 +20,20 @@
                     {% if session.get('user_id') %}
                     <li><a href="{{ url_for('common.news') }}">Новини</a></li>
                         {% if session.get('role') == 'admin' %}
-                            <li><a href="#">для адміну</a></li>
-                        {% elif session.get('role') == 'teacher' %}
+                        <li><a href="{{ url_for('admin.add_news') }}">Додати новину</a></li>
+                            <li><a href="{{ url_for('admin.new_users') }}">Нові користувачі</a></li>
+
+                            <div class="dropdown" style="margin: 0 0 0 20px; padding: 0;">
+                                <a>Таблиці</a> 
+                                <div class="dropdown-content">
+                                    <a href="{{ url_for('admin.list_tables') }}">Редагування таблиці</a>
+                                    <a href="{{ url_for('tables.list_tables_old') }}">База знань</a>
+                                </div>
+                            </div> 
+
+
+
+                            {% elif session.get('role') == 'teacher' %}
                             <li><a href="{{ url_for('teacher.teacher_schedule') }}">Розклад груп</a></li>
                             <li><a href="{{ url_for('teacher.my_subject') }}">Мій предмет</a></li>
                             <li><a href="{{ url_for('teacher.homeworks') }}">Завдання</a></li>
@@ -52,6 +64,7 @@
     </header>
     
     <main>
+        
         {% block content %}{% endblock %}
     </main>
     <footer>

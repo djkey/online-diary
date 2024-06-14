@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця {{ table_name }} - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Таблиця: {{ table_name }}</h2>
+<table>
+    <thead>
+        <tr>
+            {% for column in columns %}
+                <th>{{ column }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+            <tr>
+                {% for column in columns %}
+                    <td>
+                        {% if table_name == 'Solutions' and column == 'files' %}
+                            <a href="{{ url_for('admin.download_file', homework_id=row['homework_id'], student_id=row['student_id']) }}">[...]</a>
+                        {% else %}
+                            {{ row[column] }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

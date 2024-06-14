@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Список таблиц - Music School Diary{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Список таблиц</h2>
+    <div class="list-group" id="tableList">
+        {% for table in tables %}
+            <button href="#" class="list-group-item list-group-item-action" onclick="showTable('{{ table }}')" style="margin: 10px">{{ table }}</>
+        {% endfor %}
+    </div>
+    <div id="tablesContainer">
+        {% for table, data in table_data.items() %}
+            <div id="table_{{ table }}" class="table-responsive" style="display: none;">
+                <h3>{{ table }}</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            {% for column in data.columns %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data.rows %}
+                            <tr>
+                                {% for column in data.columns %}
+                                    {% if table == 'Solutions' and column == 'files' %}
+                                        <td><a href="{{ url_for('download.download_homework_file', homework_id=row['homework_id'], student_id=row['student_id']) }}">[...]</a></td>
+                                    {% else %}
+                                        <td>{{ row[column] }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function showTable(tableName) {
+        document.querySelectorAll('#tablesContainer > div').forEach(div => div.style.display = 'none');
+        document.getElementById('table_' + tableName).style.display = 'block';
+    }
+</script>
+{% endblock %}

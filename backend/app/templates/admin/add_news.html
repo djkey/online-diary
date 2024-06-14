@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Додати новини - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Додати новини</h2>
+<form method="post">
+    <label for="role">Для кого новини:</label>
+    <select name="role" id="role" required>
+        <option value="all">Всі користувачі</option>
+        <option value="students">Учні</option>
+        <option value="teachers">Вчителі</option>
+        <option value="parents">Батьки</option>
+    </select>
+    <label for="notification">Текст новини:</label>
+    <textarea name="notification" id="notification" rows="5" required></textarea>
+    <button type="submit">Додати новини</button>
+</form>
+{% endblock %}

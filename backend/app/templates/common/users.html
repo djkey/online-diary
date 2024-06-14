@@ -3,34 +3,35 @@
 {% block title %}Користувачі - Music School Diary{% endblock %}
 
 {% block content %}
-        <section>
-            <h2>Користувачі</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Ім'я</th>
-                        <th>Електронна пошта</th>
-                        <th>Логін</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                        <tr>
-                            <td>{{ user.user_id }}</td>
-                            <td>{{ user.name }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.login }}</td>
-                            <td>{{ user.password }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Music School Diary. Всі права захищені.</p>
-    </footer>
-</body>
-</html>
+        <h1>Користувачі</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>user_id</th>
+                <th>name</th>
+                <th>email</th>
+                <th>login</th>
+                <th>password</th>
+                <th>admin</th>
+                <th>teacher</th>
+                <th>student</th>
+                <th>parent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.login }}</td>
+                <td>{{ user.password }}</td>
+                <td>{% if user.is_admin %}✓{% else %}{% endif %}</td>
+                <td>{% if user.is_teacher %}✓{% else %}{% endif %}</td>
+                <td>{% if user.is_student %}✓{% else %}{% endif %}</td>
+                <td>{% if user.is_parent %}✓{% else %}{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

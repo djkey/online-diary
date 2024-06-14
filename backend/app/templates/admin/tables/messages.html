@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця Повідомлення - Music School Diary{% endblock %}
+
+{% block content %}
+    <button onclick="toggleForm()">Додати нове повідомлення</button>
+    <form id="addMessageForm" style="display:none; width: 60%;" method="POST">
+        <div class="form-row">
+            <select name="sender_id" required style="margin: 5px; width: 20%;">
+                {% for user in users %}
+                    <option value="{{ user.user_id }}">Від: {{ user.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="receiver_id" required style="margin: 5px; width: 20%;">
+                {% for user in users %}
+                    <option value="{{ user.user_id }}">До: {{ user.name }}</option>
+                {% endfor %}
+            </select>
+            <textarea name="msg" placeholder="Повідомлення" required style="margin: 5px; width: 60%;"></textarea>
+            <button type="submit" class="icon-button" style="color: green;">&#10004;</button>
+            <button type="button" class="icon-button" style="color: red;" onclick="toggleForm()">&#10008;</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                    {% endfor %}
+                    <td>
+                        <form method="POST" action="{{ url_for('tables.delete_message') }}" style="display: inline;">
+                            <input type="hidden" name="message_id" value="{{ row.message_id }}">
+                            <button type="submit" class="delete-button" onclick="return confirm('Ви впевнені, що хочете видалити цю запис?');">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("addMessageForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

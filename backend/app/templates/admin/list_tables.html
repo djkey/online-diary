@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця - Music School Diary{% endblock %}
+
+{% block content %}
+<main>
+    <table>
+        <thead>
+            <tr>
+                <th>Назва таблиці</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for table in tables %}
+            <tr>
+                <td><a href="{{ url_for('tables.view_' + table.lower()) }}">{{ table }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+{% endblock %}

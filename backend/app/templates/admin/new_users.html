@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Нові користувачі - Music School Diary{% endblock %}
+
+{% block content %}
+<h2>Нові користувачі</h2>
+<form method="post">
+    <table width="500px">
+        <thead>
+            <tr>
+                <th>ФІО</th>
+                <th>Електронна пошта</th>
+                <th>Роль</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in new_users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td width="100%">
+                        <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                        <select name="role">
+                            <option value="">Виберіть роль</option>
+                            <option value="student">Учень</option>
+                            <option value="teacher">Вчитель</option>
+                            <option value="parent">Батько/Мати</option>
+                            <option value="admin">Адміністратор</option>
+                        </select>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Зберегти ролі</button>
+</form>
+{% endblock %}

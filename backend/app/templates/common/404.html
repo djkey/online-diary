@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Music School Diary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+</head>
+<body>
+    <div class="error-page">
+        <img src="{{ url_for('static', filename='images/Error.webp') }}" alt="404 - Такої сторінки не існує">
+        <div class="centered-content">
+            <div class="error-text">404</div>
+            <div class="error-subtext">Щось пішло не так. Дуже, дуже, дуже не так</div>
+            <a href="/" class="home-button">Повернутися на головну</a>
+        </div>
+    </div>
+</body>
+</html>

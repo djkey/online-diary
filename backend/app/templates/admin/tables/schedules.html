@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця Розклад - Music School Diary{% endblock %}
+
+{% block content %}
+    <button onclick="toggleForm()">Додати новий розклад</button>
+    <form id="addScheduleForm" style="display:none; width: 50%;" method="POST">
+        <div class="form-row">
+            <select name="group_id" required style="margin: 5px; width: 15%;">
+                <option value="" disabled selected>Номер групи</option>
+                {% for group in groups %}
+                    <option value="{{ group.group_id }}">{{ group.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="date" name="date" placeholder="Дата" required style="margin: 5px; width: 10%;">
+            <input type="number" name="number_lesson" placeholder="Номер уроку" required style="margin: 5px;" min="1" max="8">
+            <select name="lesson_id" required style="margin: 5px; width: 20%;">
+                <option value="" disabled selected>Назва предмету</option>
+                {% for lesson in lessons %}
+                    <option value="{{ lesson.lesson_id }}">{{ lesson.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="homework_id" style="margin: 5px; width: 20%;">
+                <option value="">Немає домашнього завдання</option>
+                {% for homework in homeworks %}
+                    <option value="{{ homework.homework_id }}">{{ homework.description }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="icon-button" style="color: green;">&#10004;</button>
+            <button type="button" class="icon-button" style="color: red;" onclick="toggleForm()">&#10008;</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                    {% endfor %}
+                    <td>
+                        <form method="POST" action="{{ url_for('tables.delete_schedule') }}" style="display: inline;">
+                            <input type="hidden" name="schedule_id" value="{{ row.schedule_id }}">
+                            <button type="submit" class="delete-button" onclick="return confirm('Ви впевнені, що хочете видалити цю запис?');">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("addScheduleForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

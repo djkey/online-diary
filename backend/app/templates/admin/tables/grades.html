@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця Оцінки - Music School Diary{% endblock %}
+
+{% block content %}
+    <button onclick="toggleForm()">Додати нову оцінку</button>
+    <form id="addGradeForm" style="display:none; width: 50%;" method="POST">
+        <div class="form-row">
+            <select name="student_id" required style="margin: 5px;">
+                <option value="">Виберіть студента</option>
+                {% for student in available_students %}
+                    <option value="{{ student.student_id }}">{{ student.student_id }}: {{ student.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="schedule_id" required style="margin: 5px;">
+                <option value="">Виберіть розклад</option>
+                {% for schedule in available_schedules %}
+                    {% if schedule.date %}
+                        <option value="{{ schedule.schedule_id }}">{{ schedule.date.strftime('%d.%m') }}: {{ schedule.number_lesson }} урок</option>
+                    {% else %}
+                        <option value="{{ schedule.schedule_id }}">Без дати: {{ schedule.number_lesson }} урок</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <input type="number" name="grade" placeholder="Оцінка" required style="margin: 5px;" min="1" max="12">
+            <input type="text" name="comments" placeholder="Коментар" style="margin: 5px;">
+            <button type="submit" class="icon-button" style="color: green;">&#10004;</button>
+            <button type="button" class="icon-button" style="color: red;" onclick="toggleForm()">&#10008;</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                    {% endfor %}
+                    <td>
+                        <form method="POST" action="{{ url_for('tables.delete_grade') }}" style="display: inline;">
+                            <input type="hidden" name="grade_id" value="{{ row.grade_id }}">
+                            <button type="submit" class="delete-button" onclick="return confirm('Ви впевнені, що хочете видалити цю запис?');">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("addGradeForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

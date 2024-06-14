@@ -3,6 +3,10 @@ from flask import Blueprint, request, jsonify, render_template, redirect, url_fo
 common_bp = Blueprint('common', __name__)
 
 
+@common_bp.app_errorhandler(404)
+def page_not_found(e):
+    return render_template('common/404.html'), 404
+
 @common_bp.route('/')
 def index():
     return render_template('common/index.html')
@@ -167,10 +171,33 @@ def logout():
     return redirect(url_for('common.login'))
 
 
+# @common_bp.route('/users')
+# def users():
+#     with current_app.connection.cursor() as cursor:
+#         cursor.execute("SELECT * FROM Users")
+#         all_users = cursor.fetchall()
+#     return render_template('common/users.html', users=all_users)
+
 @common_bp.route('/users')
 def users():
     with current_app.connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM Users")
+        cursor.execute("""
+            SELECT 
+                u.user_id, 
+                u.name, 
+                u.email, 
+                u.login, 
+                u.password, 
+                CASE WHEN a.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_admin, 
+                CASE WHEN t.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_teacher, 
+                CASE WHEN s.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_student, 
+                CASE WHEN p.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_parent
+            FROM Users u
+            LEFT JOIN Admins a ON u.user_id = a.user_id
+            LEFT JOIN Teachers t ON u.user_id = t.user_id
+            LEFT JOIN Students s ON u.user_id = s.user_id
+            LEFT JOIN Parents p ON u.user_id = p.user_id
+        """)
         all_users = cursor.fetchall()
     return render_template('common/users.html', users=all_users)
 

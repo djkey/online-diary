@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця Домашні завдання - Music School Diary{% endblock %}
+
+{% block content %}
+    <button onclick="toggleForm()">Додати нове домашнє завдання</button>
+    <form id="addHomeworkForm" style="display:none; width: 40%;" method="POST">
+        <div class="form-row">
+            <input type="text" name="description" placeholder="Опис" required style="margin: 5px;">
+            <input type="date" name="date_to" placeholder="Дата завершення" required style="margin: 5px;">
+            <button type="submit" class="icon-button" style="color: green;">&#10004;</button>
+            <button type="button" class="icon-button" style="color: red;" onclick="toggleForm()">&#10008;</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                    {% endfor %}
+                    <td>
+                        <form method="POST" action="{{ url_for('tables.delete_homework') }}" style="display: inline;">
+                            <input type="hidden" name="homework_id" value="{{ row.homework_id }}">
+                            <button type="submit" class="delete-button" onclick="return confirm('Ви впевнені, що хочете видалити цю запис?');">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("addHomeworkForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця Уведомлення - Music School Diary{% endblock %}
+
+{% block content %}
+    <button onclick="toggleForm()">Додати нове повідомлення</button>
+    <form id="addNotificationForm" style="display:none; width: 60%;" method="POST">
+        <div class="form-row">
+            <select name="user_id" required style="margin: 5px; width: 30%;">
+                <option value="" disabled selected>Виберіть людину</option>
+                {% for user in users %}
+                    <option value="{{ user.user_id }}">{{ user.user_id }}: {{ user.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="options" required style="margin: 5px; width: 30%;">
+                <option value="" disabled selected>Для кого</option>
+                <option value="all">Для всіх</option>
+                <option value="teachers">Для вчителів</option>
+                <option value="students">Для студентів</option>
+                <option value="parents">Для батьків</option>
+            </select>
+            <textarea name="notifications" placeholder="Повідомлення" required style="margin: 5px; width: 40%;"></textarea>
+            <button type="submit" class="icon-button" style="color: green;">&#10004;</button>
+            <button type="button" class="icon-button" style="color: red;" onclick="toggleForm()">&#10008;</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                    {% endfor %}
+                    <td>
+                        <form method="POST" action="{{ url_for('tables.delete_notification') }}" style="display: inline;">
+                            <input type="hidden" name="notification_id" value="{{ row.notification_id }}">
+                            <button type="submit" class="delete-button" onclick="return confirm('Ви впевнені, що хочете видалити цю запис?');">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("addNotificationForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

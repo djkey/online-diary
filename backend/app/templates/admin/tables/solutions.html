@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Таблиця Рішення - Music School Diary{% endblock %}
+
+{% block content %}
+    <button onclick="toggleForm()">Додати нове рішення</button>
+    <form id="addSolutionForm" style="display:none; width: 60%;" method="POST" enctype="multipart/form-data">
+        <div class="form-row">
+            <select name="homework_id" required style="margin: 5px; width: 15%;">
+                <option value="" disabled selected>Завдання</option>
+                {% for homework in homeworks %}
+                    <option value="{{ homework.homework_id }}">{{ homework.description }}</option>
+                {% endfor %}
+            </select>
+            <select name="student_id" required style="margin: 5px; width: 15%;">
+                <option value="" disabled selected>Студент</option>
+                {% for student in students %}
+                    <option value="{{ student.student_id }}">{{ student.student_id }}: {{ student.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="description" placeholder="Опис" required style="margin: 5px; width: 40%;">
+            <input type="file" name="files" style="margin: 5px; width: 30%;">
+            <button type="submit" class="icon-button" style="color: green;">&#10004;</button>
+            <button type="button" class="icon-button" style="color: red;" onclick="toggleForm()">&#10008;</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for column in columns %}
+                        {% if column == 'files' %}
+                            <td>
+                                <a href="{{ url_for('download.download_homework_file', homework_id=row['homework_id'], student_id=row['student_id']) }}">[...]</a>
+                            </td>
+                        {% else %}
+                            <td>{{ row[column] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>
+                        <form method="POST" action="{{ url_for('tables.delete_solution') }}" style="display: inline;">
+                            <input type="hidden" name="homework_id" value="{{ row.homework_id }}">
+                            <input type="hidden" name="student_id" value="{{ row.student_id }}">
+                            <button type="submit" class="delete-button" onclick="return confirm('Ви впевнені, що хочете видалити цю запис?');">Видалити</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function toggleForm() {
+            var form = document.getElementById("addSolutionForm");
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}
