@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
+from .decorators import admin_required
 
 admin_bp = Blueprint('admin', __name__)
 
 @admin_bp.route('/admin/new_users', methods=['GET', 'POST'])
+@admin_required
 def new_users():
     current_user_id = session.get('user_id')
     if not current_user_id:
@@ -40,6 +42,7 @@ def new_users():
     return render_template('admin/new_users.html', new_users=new_users)
 
 @admin_bp.route('/admin/add_news', methods=['GET', 'POST'])
+@admin_required
 def add_news():
     current_user_id = session.get('user_id')
     if not current_user_id:
@@ -61,6 +64,7 @@ def add_news():
     return render_template('admin/add_news.html')
 
 @admin_bp.route('/admin/tables', methods=['GET'])
+@admin_required
 def list_tables():
     current_user_id = session.get('user_id')
     if not current_user_id:

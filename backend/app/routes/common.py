@@ -171,13 +171,6 @@ def logout():
     return redirect(url_for('common.login'))
 
 
-# @common_bp.route('/users')
-# def users():
-#     with current_app.connection.cursor() as cursor:
-#         cursor.execute("SELECT * FROM Users")
-#         all_users = cursor.fetchall()
-#     return render_template('common/users.html', users=all_users)
-
 @common_bp.route('/users')
 def users():
     with current_app.connection.cursor() as cursor:

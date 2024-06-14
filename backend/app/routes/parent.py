@@ -1,17 +1,18 @@
 from flask import Blueprint, render_template, redirect, url_for, session, current_app
 import pprint
+from .decorators import parent_required
 
 parent_bp = Blueprint('parent', __name__)
 
 
 @parent_bp.route('/parent/grades')
+@parent_required
 def parent_grades():
     user_id = session.get('user_id')
     if not user_id:
         return redirect(url_for('common.login'))
 
     with current_app.connection.cursor() as cursor:
-        # Получение детей родителя (student_id)
         cursor.execute("""
             SELECT student_id 
             FROM Parents 

@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for, session, flash, current_app, make_response
+from .decorators import student_required
 
 student_bp = Blueprint('student', __name__)
 
 
 @student_bp.route('/schedule')
+@student_required
 def student_schedule():
     user_id = session.get('user_id')
     if not user_id:
@@ -64,6 +66,7 @@ def student_schedule():
 
 
 @student_bp.route('/homework')
+@student_required
 def student_homework():
     user_id = session.get('user_id')
     if not user_id:
@@ -106,6 +109,7 @@ def student_homework():
 
 
 @student_bp.route('/homework/<int:homework_id>', methods=['GET', 'POST'])
+@student_required
 def student_submit_homework(homework_id):
     user_id = session.get('user_id')
     if not user_id:
@@ -153,6 +157,7 @@ def student_submit_homework(homework_id):
 
 
 @student_bp.route('/homework/<int:homework_id>/download')
+@student_required
 def download_file(homework_id):
     user_id = session.get('user_id')
     if not user_id:

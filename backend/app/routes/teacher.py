@@ -1,11 +1,12 @@
 from flask import render_template, session, redirect, url_for, current_app, Blueprint, request
-import pymysql
 from datetime import datetime
+from .decorators import teacher_required
 
 teacher_bp = Blueprint('teacher', __name__)
 
 
 @teacher_bp.route('/teacher/schedule', methods=['GET', 'POST'])
+@teacher_required
 def teacher_schedule():
     current_user_id = session.get('user_id')
     if not current_user_id:
@@ -105,6 +106,7 @@ def teacher_schedule():
 
 
 @teacher_bp.route('/teacher/my_subject', methods=['GET', 'POST'])
+@teacher_required
 def my_subject():
     current_user_id = session.get('user_id')
     if not current_user_id:
@@ -134,6 +136,7 @@ def my_subject():
 
 
 @teacher_bp.route('/teacher/my_subject/<int:schedule_id>', methods=['GET', 'POST'])
+@teacher_required
 def view_grades(schedule_id):
     current_user_id = session.get('user_id')
     if not current_user_id:
@@ -199,6 +202,7 @@ def view_grades(schedule_id):
 
 
 @teacher_bp.route('/teacher/solution/<int:homework_id>/<int:student_id>', methods=['GET'])
+@teacher_required
 def view_solution(homework_id, student_id):
     current_user_id = session.get('user_id')
     if not current_user_id:
@@ -218,6 +222,7 @@ def view_solution(homework_id, student_id):
 
 
 @teacher_bp.route('/homework/<int:homework_id>/download/<int:student_id>', methods=['GET'])
+@teacher_required
 def download_file(homework_id, student_id):
     current_user_id = session.get('user_id')
     if not current_user_id:
@@ -245,6 +250,7 @@ def download_file(homework_id, student_id):
 
 
 @teacher_bp.route('/teacher/homeworks', methods=['GET', 'POST'])
+@teacher_required
 def homeworks():
     current_user_id = session.get('user_id')
     if not current_user_id:
