@@ -1,4 +1,7 @@
-from flask import Blueprint, current_app, session, redirect, url_for, send_file
+from flask import Blueprint, current_app, session, redirect, url_for, send_file, make_response
+from .decorators import admin_required
+from io import StringIO
+import csv
 import io
 
 download_bp = Blueprint('download', __name__)
@@ -23,3 +26,26 @@ def download_homework_file(homework_id, student_id):
             download_name=result['data_options']
         )
     return redirect(url_for('tables.view_solutions'))
+
+
+@download_bp.route('/admin/tables/download/<table_name>', methods=['GET'])
+@admin_required
+def download_table_csv(table_name):
+    current_user_id = session.get('user_id')
+    if not current_user_id:
+        return redirect(url_for('common.login'))
+
+    with current_app.connection.cursor() as cursor:
+        cursor.execute(f"SELECT * FROM {table_name}")
+        columns = [desc[0] for desc in cursor.description]
+        rows = cursor.fetchall()
+
+    si = StringIO()
+    cw = csv.writer(si, delimiter=';')
+    cw.writerow(columns)
+    cw.writerows([[row[col] for col in columns] for row in rows])
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = f"attachment; filename={
+        table_name}.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output

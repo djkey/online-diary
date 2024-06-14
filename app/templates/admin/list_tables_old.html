@@ -7,13 +7,14 @@
     <h2>Список таблиц</h2>
     <div class="list-group" id="tableList">
         {% for table in tables %}
-            <button href="#" class="list-group-item list-group-item-action" onclick="showTable('{{ table }}')" style="margin: 10px">{{ table }}</>
+            <button href="#" class="list-group-item list-group-item-action" onclick="showTable('{{ table }}')" style="margin: 10px">{{ table }}</button>
         {% endfor %}
     </div>
     <div id="tablesContainer">
         {% for table, data in table_data.items() %}
             <div id="table_{{ table }}" class="table-responsive" style="display: none;">
                 <h3>{{ table }}</h3>
+                <a href="{{ url_for('download.download_table_csv', table_name=table) }}" class="btn btn-primary">Скачать CSV</a>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
